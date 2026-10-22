@@ -45,16 +45,30 @@ Exit criterion: known manufactured solutions demonstrate declared convergence be
 - [x] freeze parameter grid, numerical audit, tolerance derivation, and pair-selection protocol
 - [x] implement the exact biaxial pulsatile channel state generator
 - [x] implement deterministic enumeration of the locked 504-state family
-- [ ] run the predeclared numerical uncertainty audit
-- [ ] derive and freeze Phase-3 tolerances
-- [ ] compute WSS only and freeze the qualified pair manifest
-- [ ] evaluate the complete source04 hierarchy for frozen pairs
-- [ ] analytical-versus-numerical classification audit
-- [ ] publication result bundle
+- [x] run the predeclared numerical uncertainty audit
+- [ ] derive and freeze Phase-3 tolerances — **not permitted after the failed convergence gate**
+- [ ] compute WSS only and freeze the qualified pair manifest — **not permitted after the failed convergence gate**
+- [ ] evaluate the complete source04 hierarchy for frozen pairs — **not reached**
+- [ ] analytical-versus-numerical classification audit — **not reached**
+- [ ] publication result bundle — only the pre-pair feasibility/audit result is currently available
 
-The locked Phase-3 design is documented in [`PHASE3_PROTOCOL.md`](PHASE3_PROTOCOL.md). It contains 504 exact periodic states and 1512 predeclared same-WSS candidate pairs. The exact state generator implements this frozen family without changing its parameter grid, refinement levels, or outcome firewall.
+The locked Phase-3 design is documented in [`PHASE3_PROTOCOL.md`](PHASE3_PROTOCOL.md). The complete 504-state numerical audit is documented in [`PHASE3_UNCERTAINTY_AUDIT.md`](PHASE3_UNCERTAINTY_AUDIT.md).
 
-Exit criterion: one versioned command reproduces the full state family, uncertainty audit, frozen-pair manifest, complete source04 hierarchy, and closure decision without post-outcome protocol changes.
+The predeclared convergence requirement was $p\ge1.9$. The defining hydrodynamic-charge route produced
+
+$$
+p_{q_H}=1.53396,
+$$
+
+so the locked hard-stop rule was triggered before tolerance freezing or WSS-pair inspection. No Phase-3 closure outcome has been computed.
+
+Phase-3 execution status:
+
+$$
+\boxed{\text{STOPPED AT THE PRE-PAIR NUMERICAL CONVERGENCE GATE}}
+$$
+
+The protocol must not be relaxed or silently revised to continue this experiment. Any future numerical redesign is a new protocol/version, not a continuation of this locked Phase-3 run.
 
 ## Phase 4 — endovascular geometry
 
