@@ -52,9 +52,9 @@ The locked scientific contract is documented in [`docs/SCIENTIFIC_CONTRACT.md`](
 
 ## Current status
 
-**Phase 1 — exact theory kernel** and **Phase 2 — numerical operators and uncertainty** are implemented. The **Phase-3 parametric closure experiment is now scientifically locked before implementation** in [`docs/PHASE3_PROTOCOL.md`](docs/PHASE3_PROTOCOL.md).
+**Phase 1 — exact theory kernel** and **Phase 2 — numerical operators and uncertainty** are implemented. The **Phase-3 parametric closure experiment is scientifically locked** in [`docs/PHASE3_PROTOCOL.md`](docs/PHASE3_PROTOCOL.md), and its exact state generator is now implemented.
 
-The locked Phase-3 family is an exact multiharmonic biaxial pulsatile parallel-plate Navier–Stokes family with 504 predeclared states and 1512 predeclared same-WSS candidate pairs. Its parameter grid, refinement levels, uncertainty derivation, WSS-only pair-freezing rule, primary closure decision, nested outcomes, and stopping rule are fixed before any Phase-3 state-generator or pair-outcome code is written.
+The locked Phase-3 family is an exact multiharmonic biaxial pulsatile parallel-plate Navier–Stokes family with 504 predeclared states and 1512 predeclared same-WSS candidate pairs. Its parameter grid, refinement levels, uncertainty derivation, WSS-only pair-freezing rule, primary closure decision, nested outcomes, and stopping rule remain fixed.
 
 The package currently provides:
 
@@ -66,9 +66,11 @@ The package currently provides:
 - independent hydrodynamic-charge and Crocco residual routes;
 - exact Taylor-Green Navier-Stokes verification;
 - convergence-series, Richardson uncertainty, conservative uncertainty budgets, and provenance-bearing qualification thresholds;
-- qualification certificates that compare residuals with already-derived uncertainty bounds without changing either quantity.
+- qualification certificates that compare residuals with already-derived uncertainty bounds without changing either quantity;
+- exact multiharmonic biaxial pulsatile channel fields with analytical velocity, pressure-gradient, WSS, source04 state, Crocco, and finite-volume Lamb references;
+- deterministic enumeration of the locked 504-state Phase-3 family and refusal of off-protocol parameter/refinement values.
 
-Phase-3 state generation, WSS-pair freezing, and closure outcomes are not implemented yet. Curved endovascular geometry, CFD solving, and experimental-data adapters remain later phases.
+The Phase-3 uncertainty audit, tolerance freeze, WSS-pair manifest, and closure outcomes are not implemented yet. Curved endovascular geometry, CFD solving, and experimental-data adapters remain later phases.
 
 Run the locked analytical benchmark with:
 
@@ -79,6 +81,21 @@ shift benchmark poiseuille
 For the representative pair $H_B=2H_A$, the regression target includes $d_\tau=0$, $d_Q=0$, $d_q=0.1538018223$, and $d_{\mathcal M}=0.0742470472$, with $d_{LU}$ remaining undefined for the steady solution. The complete derivation and reference values are documented in [`docs/EXACT_POISEUILLE_BENCHMARK.md`](docs/EXACT_POISEUILLE_BENCHMARK.md).
 
 The numerical verification and uncertainty contract is documented in [`docs/NUMERICAL_VERIFICATION.md`](docs/NUMERICAL_VERIFICATION.md).
+
+A locked Phase-3 exact state can be generated directly from the protocol table:
+
+```python
+from shift.phase3 import generate_locked_phase3_state, locked_phase3_cases
+
+case = locked_phase3_cases()[0]
+state = generate_locked_phase3_state(
+    case,
+    wall_normal_samples=17,
+    temporal_samples=32,
+)
+```
+
+The default generator support is the locked production representation $N_y=257$, $N_t=512$; smaller values above are also protocol-approved refinement levels.
 
 ## Intended capabilities
 
@@ -127,8 +144,10 @@ src/shift/                  installable Python package
   certify.py                raw residuals and uncertainty-derived qualification
   metrics.py                d_tau, d_M, and nested source04 distances
   benchmarks.py             locked analytical regression entry points
+  phase3.py                 locked Phase-3 constants, 504 cases, exact wrapper
   models/poiseuille.py      exact parallel-plate Poiseuille family
   models/taylor_green.py    exact Navier-Stokes numerical-verification family
+  models/biaxial_channel.py exact multiharmonic biaxial pulsatile channel
   cli.py                    public command-line entry point
 tests/                      contracts, mechanics, numerics, uncertainty, regressions
 docs/SCIENTIFIC_CONTRACT.md theory-to-code invariants
