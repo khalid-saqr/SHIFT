@@ -321,6 +321,8 @@ def exact_biaxial_pulsatile_channel(
         upper=height_m,
         minimum_points=2,
     )
+    if not np.isclose(y[0], 0.0, rtol=0.0, atol=1e-15):
+        raise ValueError("y_m must include the lower wall at zero as its first sample")
     time = _validate_coordinate(
         time_s,
         "time_s",
