@@ -3,10 +3,10 @@
 import argparse
 import platform
 import sys
+from importlib.metadata import version
 
-from shift import __version__
 
-
+PROJECT_VERSION = version("shift-hemodynamics")
 CONTRACT_SUMMARY = (
     "Full vector WSS -> independently qualified near-wall source04 state; "
     "thresholds are frozen from uncertainty before closure outcomes."
@@ -28,13 +28,13 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
 
     if args.command == "info":
-        print(f"SHIFT {__version__}")
+        print(f"SHIFT {PROJECT_VERSION}")
         print("Shear-equivalent Hemodynamic Invariance Falsification Test")
         print(CONTRACT_SUMMARY)
         return 0
 
     if args.command == "doctor":
-        print(f"SHIFT {__version__}")
+        print(f"SHIFT {PROJECT_VERSION}")
         print(f"Python: {platform.python_version()}")
         print(f"Implementation: {platform.python_implementation()}")
         print(f"Platform: {platform.platform()}")
