@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import math
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True, slots=True)
@@ -80,5 +80,6 @@ class Threshold:
             raise ValueError("threshold value must be finite and non-negative")
         if not self.provenance.strip():
             raise ValueError(
-                "threshold provenance is required; arbitrary software defaults are invalid"
+                "threshold provenance is required; "
+                "arbitrary software defaults are invalid"
             )
