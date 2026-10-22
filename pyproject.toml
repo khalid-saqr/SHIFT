@@ -25,7 +25,9 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Topic :: Scientific/Engineering",
 ]
-dependencies = []
+dependencies = [
+  "numpy>=2.0",
+]
 
 [project.optional-dependencies]
 dev = [
