@@ -27,14 +27,17 @@ Exit criterion: all closed-form benchmark values reproduce independently derived
 
 ## Phase 2 — numerical operator and uncertainty kernel
 
-- [ ] structured-grid spatial derivatives
-- [ ] temporal derivatives
-- [ ] wall-normal derivatives
-- [ ] convergence studies
-- [ ] uncertainty-derived thresholds
-- [ ] qualification certificates
+- [x] structured-grid spatial derivatives
+- [x] temporal derivatives
+- [x] wall-normal derivatives
+- [x] convergence studies
+- [x] uncertainty-derived thresholds
+- [x] qualification certificates
+- [x] numerical source04 reconstruction from sampled velocity/pressure fields
+- [x] exact Taylor-Green Navier-Stokes verification model
+- [x] Poiseuille wall-gradient/WSS numerical regression
 
-Exit criterion: known manufactured solutions demonstrate declared convergence behavior and tolerance derivation is outcome-independent.
+Exit criterion: known manufactured solutions demonstrate declared convergence behavior and tolerance derivation is outcome-independent. **Satisfied by the Phase-2 operator, Taylor-Green, uncertainty, and wall-WSS regression suite.**
 
 ## Phase 3 — parametric closure experiment
 
