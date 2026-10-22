@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use SHIFT, please cite the software and the companion paper when available."
+title: "SHIFT: Shear-equivalent Hemodynamic Invariance Falsification Test"
+type: software
+authors:
+  - family-names: "Saqr"
+    given-names: "Khalid M."
+repository-code: "https://github.com/khalid-saqr/SHIFT"
+version: 0.0.1
+license: "License to be selected before archival release"

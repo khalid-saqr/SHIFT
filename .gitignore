@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+build/
+dist/
+
+# Editors / OS
+.DS_Store
+.vscode/
+.idea/
+
+# SHIFT run products
+runs/
+artifacts/
+*.h5
+*.hdf5
+*.vtk
+*.vtu
+*.vtp
+*.xdmf
+*.npz
+
+# Keep small, explicit test fixtures under tests/fixtures when added.
+!tests/fixtures/**
