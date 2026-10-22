@@ -87,13 +87,21 @@ def differentiate(
     return np.moveaxis(result, 0, normalized_axis)
 
 
-def first_derivative(values: ArrayLike, coordinate: ArrayLike, *, axis: int) -> FloatArray:
+def first_derivative(
+    values: ArrayLike,
+    coordinate: ArrayLike,
+    *,
+    axis: int,
+) -> FloatArray:
     """Second-order first derivative on a finite nonuniform coordinate."""
     return differentiate(values, coordinate, axis=axis, derivative_order=1)
 
 
 def second_derivative(
-    values: ArrayLike, coordinate: ArrayLike, *, axis: int
+    values: ArrayLike,
+    coordinate: ArrayLike,
+    *,
+    axis: int,
 ) -> FloatArray:
     """Second-order second derivative on a finite nonuniform coordinate."""
     return differentiate(values, coordinate, axis=axis, derivative_order=2)
@@ -210,7 +218,10 @@ def curl(field: ArrayLike, grid: CartesianGrid) -> FloatArray:
 
 
 def temporal_derivative(
-    values: ArrayLike, time_s: ArrayLike, *, axis: int = 0
+    values: ArrayLike,
+    time_s: ArrayLike,
+    *,
+    axis: int = 0,
 ) -> FloatArray:
     """Second-order temporal derivative on a nonuniform time coordinate."""
     return first_derivative(values, time_s, axis=axis)
