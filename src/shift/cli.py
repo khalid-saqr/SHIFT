@@ -1,12 +1,10 @@
 """Public command-line entry point for SHIFT."""
 
-from __future__ import annotations
-
 import argparse
 import platform
 import sys
 
-from . import __version__
+from shift import __version__
 
 
 CONTRACT_SUMMARY = (
