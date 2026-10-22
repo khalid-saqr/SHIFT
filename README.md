@@ -52,7 +52,21 @@ The locked scientific contract is documented in [`docs/SCIENTIFIC_CONTRACT.md`](
 
 ## Current status
 
-**Phase 1 — exact theory kernel** is implemented. The current package provides solver-independent source04 mechanics, dimensionless primary-state containers, the primary and nested closure distances, internal identity residuals, and an exact parallel-plate Poiseuille regression family. Numerical derivative operators, uncertainty-derived application thresholds, CFD backends, and vascular-data adapters belong to later phases and are not claimed by the current release.
+**Phase 1 — exact theory kernel** and **Phase 2 — numerical operators and uncertainty** are implemented.
+
+The package now provides:
+
+- solver-independent source04 mechanics and the complete primary/nested distance hierarchy;
+- the locked exact parallel-plate Poiseuille counterexample;
+- auditable first- and second-derivative operators on explicit nonuniform Cartesian coordinates;
+- gradient, divergence, curl, scalar/vector Laplacian, temporal derivative, and wall-normal derivative operators;
+- numerical reconstruction of $Q$, $q_H$, Lamb fields, $C_U$, $C_H$, and $C_D$ from sampled velocity and pressure;
+- independent hydrodynamic-charge and Crocco residual routes;
+- exact Taylor-Green Navier-Stokes verification;
+- convergence-series, Richardson uncertainty, conservative uncertainty budgets, and provenance-bearing qualification thresholds;
+- qualification certificates that compare residuals with already-derived uncertainty bounds without changing either quantity.
+
+No WSS-pair search, parametric closure result, CFD solver, vascular geometry engine, or experimental-data adapter is claimed yet. Those belong to later phases.
 
 Run the locked analytical benchmark with:
 
@@ -62,14 +76,16 @@ shift benchmark poiseuille
 
 For the representative pair $H_B=2H_A$, the regression target includes $d_\tau=0$, $d_Q=0$, $d_q=0.1538018223$, and $d_{\mathcal M}=0.0742470472$, with $d_{LU}$ remaining undefined for the steady solution. The complete derivation and reference values are documented in [`docs/EXACT_POISEUILLE_BENCHMARK.md`](docs/EXACT_POISEUILLE_BENCHMARK.md).
 
+The numerical verification and uncertainty contract is documented in [`docs/NUMERICAL_VERIFICATION.md`](docs/NUMERICAL_VERIFICATION.md).
+
 ## Intended capabilities
 
-The codebase will grow only where required by the experiment. Planned capabilities include:
+The codebase grows only where required by the experiment. The staged target includes:
 
 1. generation or ingestion of incompressible hemodynamic states;
 2. vascular wall geometry, wall correspondence, and near-wall control-volume construction;
 3. WSS evaluation from the full Cauchy traction;
-4. three-dimensional differential operators with convergence auditing;
+4. verified three-dimensional differential operators with convergence auditing;
 5. computation of $Q$, $q_H$, Lamb-vector fields, generalized Crocco terms, nonlinear–unsteady diagnostics, and finite-volume Lamb descriptors;
 6. independent numerical certification of incompressibility, hydrodynamic-charge identity, and Crocco closure;
 7. uncertainty-derived tolerances and reproducible WSS-equivalence search;
@@ -94,7 +110,7 @@ pytest
 ruff check .
 ```
 
-Python 3.11 or newer is required. NumPy is the only runtime dependency in the exact theory kernel.
+Python 3.11 or newer is required. NumPy is the only runtime dependency.
 
 ## Repository map
 
@@ -103,15 +119,20 @@ src/shift/                  installable Python package
   contracts.py              immutable scales, weights, thresholds
   state.py                  dimensional/dimensionless source04 primary states
   mechanics.py              Q, vorticity, Lamb, WSS, Crocco, finite-volume tools
-  certify.py                continuity, charge, and Crocco residuals
+  operators.py              auditable spatial, temporal, wall-normal derivatives
+  numerics.py               sampled-field source04 reconstruction
+  uncertainty.py            convergence, Richardson estimates, uncertainty budgets
+  certify.py                raw residuals and uncertainty-derived qualification
   metrics.py                d_tau, d_M, and nested source04 distances
   benchmarks.py             locked analytical regression entry points
   models/poiseuille.py      exact parallel-plate Poiseuille family
+  models/taylor_green.py    exact Navier-Stokes numerical-verification family
   cli.py                    public command-line entry point
-tests/                      contract, mechanics, metric, CLI, and regression tests
+tests/                      contracts, mechanics, numerics, uncertainty, regressions
 docs/SCIENTIFIC_CONTRACT.md theory-to-code invariants
 docs/EXPERIMENT_PROTOCOL.md predeclared experiment ordering
 docs/EXACT_POISEUILLE_BENCHMARK.md exact Phase-1 benchmark derivation
+docs/NUMERICAL_VERIFICATION.md Phase-2 operator and uncertainty contract
 docs/ARCHITECTURE.md        bounded module architecture
 docs/ROADMAP.md             staged implementation plan
 examples/                   publication-oriented examples as they are added
