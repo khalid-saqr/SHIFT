@@ -102,6 +102,23 @@ def test_pressure_evaluator_has_the_declared_exact_gradient() -> None:
     )
 
 
+def test_exact_model_requires_explicit_lower_wall_support() -> None:
+    waveform = BiaxialWallShearWaveform(PHASE3_TAU_C_PA, 0.75, 0.3, 0.6)
+    with pytest.raises(ValueError, match="lower wall"):
+        exact_biaxial_pulsatile_channel(
+            height_m=0.008,
+            period_s=0.8,
+            near_wall_thickness_m=PHASE3_DELTA_M,
+            density_kg_m3=PHASE3_RHO_KG_M3,
+            dynamic_viscosity_pa_s=PHASE3_MU_PA_S,
+            waveform=waveform,
+            scales=PHASE3_SCALES,
+            activity_fraction=PHASE3_ACTIVITY_FRACTION,
+            y_m=np.array([1e-4, 2e-4]),
+            time_s=np.array([0.0, 0.8]),
+        )
+
+
 def test_steady_member_reduces_to_locked_phase1_poiseuille_solution() -> None:
     height = 0.008
     y = np.linspace(0.0, PHASE3_DELTA_M, 33)
