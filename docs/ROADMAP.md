@@ -43,7 +43,8 @@ Exit criterion: known manufactured solutions demonstrate declared convergence be
 
 - [x] choose and lock bounded hemodynamic parameter family
 - [x] freeze parameter grid, numerical audit, tolerance derivation, and pair-selection protocol
-- [ ] implement the exact biaxial pulsatile channel state generator
+- [x] implement the exact biaxial pulsatile channel state generator
+- [x] implement deterministic enumeration of the locked 504-state family
 - [ ] run the predeclared numerical uncertainty audit
 - [ ] derive and freeze Phase-3 tolerances
 - [ ] compute WSS only and freeze the qualified pair manifest
@@ -51,7 +52,7 @@ Exit criterion: known manufactured solutions demonstrate declared convergence be
 - [ ] analytical-versus-numerical classification audit
 - [ ] publication result bundle
 
-The locked Phase-3 design is documented in [`PHASE3_PROTOCOL.md`](PHASE3_PROTOCOL.md). It contains 504 exact periodic states and 1512 predeclared same-WSS candidate pairs. No Phase-3 outcome code is written before this protocol is frozen.
+The locked Phase-3 design is documented in [`PHASE3_PROTOCOL.md`](PHASE3_PROTOCOL.md). It contains 504 exact periodic states and 1512 predeclared same-WSS candidate pairs. The exact state generator implements this frozen family without changing its parameter grid, refinement levels, or outcome firewall.
 
 Exit criterion: one versioned command reproduces the full state family, uncertainty audit, frozen-pair manifest, complete source04 hierarchy, and closure decision without post-outcome protocol changes.
 
