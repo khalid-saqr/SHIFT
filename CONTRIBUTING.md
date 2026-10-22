@@ -38,6 +38,15 @@ A new derivative, interpolation, filtering, solver, pressure reconstruction, wal
 
 An adapter for CFD, PIV/PTV, 4D-flow MRI, or another source must declare what is directly observed, reconstructed, projected, filtered, or unavailable. Missing state variables must not be silently manufactured.
 
+## Documentation math
+
+All Markdown documentation uses GitHub MathJax with dollar delimiters only:
+
+- inline mathematics: `$...$`;
+- displayed mathematics: `$$...$$`, with the delimiters on their own lines for multiline equations.
+
+Backslash-style TeX math delimiters are not permitted in Markdown. CI enforces this convention across every `*.md` file in the repository.
+
 ## Development workflow
 
 ```bash
@@ -53,6 +62,7 @@ Every pull request should be small enough to review scientifically as well as pr
 - [ ] Scientific definitions are unchanged, or the theory-version change is explicit.
 - [ ] New public behavior has tests.
 - [ ] Units and coordinate conventions are documented.
+- [ ] Markdown equations use dollar-delimited MathJax.
 - [ ] Numerical thresholds have stated provenance.
 - [ ] Undefined quantities remain undefined rather than being replaced by zero.
 - [ ] No closure outcome was used to tune a tolerance, weight, mapping, or pair-selection rule.
