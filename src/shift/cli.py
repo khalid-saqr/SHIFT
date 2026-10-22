@@ -1,9 +1,9 @@
 """Public command-line entry point for SHIFT."""
 
 import argparse
+from importlib.metadata import version
 import platform
 import sys
-from importlib.metadata import version
 
 
 PROJECT_VERSION = version("shift-hemodynamics")
