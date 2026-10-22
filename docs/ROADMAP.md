@@ -41,14 +41,19 @@ Exit criterion: known manufactured solutions demonstrate declared convergence be
 
 ## Phase 3 — parametric closure experiment
 
-- [ ] choose bounded hemodynamic parameter family
-- [ ] generate admissible states
-- [ ] freeze WSS-equivalent pair search
-- [ ] evaluate the complete source04 hierarchy
-- [ ] resolution/robustness study
+- [x] choose and lock bounded hemodynamic parameter family
+- [x] freeze parameter grid, numerical audit, tolerance derivation, and pair-selection protocol
+- [ ] implement the exact biaxial pulsatile channel state generator
+- [ ] run the predeclared numerical uncertainty audit
+- [ ] derive and freeze Phase-3 tolerances
+- [ ] compute WSS only and freeze the qualified pair manifest
+- [ ] evaluate the complete source04 hierarchy for frozen pairs
+- [ ] analytical-versus-numerical classification audit
 - [ ] publication result bundle
 
-Exit criterion: the full experiment can be reproduced from one versioned configuration and produces machine-readable evidence for every reported claim.
+The locked Phase-3 design is documented in [`PHASE3_PROTOCOL.md`](PHASE3_PROTOCOL.md). It contains 504 exact periodic states and 1512 predeclared same-WSS candidate pairs. No Phase-3 outcome code is written before this protocol is frozen.
+
+Exit criterion: one versioned command reproduces the full state family, uncertainty audit, frozen-pair manifest, complete source04 hierarchy, and closure decision without post-outcome protocol changes.
 
 ## Phase 4 — endovascular geometry
 
