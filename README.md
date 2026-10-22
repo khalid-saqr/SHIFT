@@ -52,9 +52,11 @@ The locked scientific contract is documented in [`docs/SCIENTIFIC_CONTRACT.md`](
 
 ## Current status
 
-**Phase 1 — exact theory kernel** and **Phase 2 — numerical operators and uncertainty** are implemented.
+**Phase 1 — exact theory kernel** and **Phase 2 — numerical operators and uncertainty** are implemented. The **Phase-3 parametric closure experiment is now scientifically locked before implementation** in [`docs/PHASE3_PROTOCOL.md`](docs/PHASE3_PROTOCOL.md).
 
-The package now provides:
+The locked Phase-3 family is an exact multiharmonic biaxial pulsatile parallel-plate Navier–Stokes family with 504 predeclared states and 1512 predeclared same-WSS candidate pairs. Its parameter grid, refinement levels, uncertainty derivation, WSS-only pair-freezing rule, primary closure decision, nested outcomes, and stopping rule are fixed before any Phase-3 state-generator or pair-outcome code is written.
+
+The package currently provides:
 
 - solver-independent source04 mechanics and the complete primary/nested distance hierarchy;
 - the locked exact parallel-plate Poiseuille counterexample;
@@ -66,7 +68,7 @@ The package now provides:
 - convergence-series, Richardson uncertainty, conservative uncertainty budgets, and provenance-bearing qualification thresholds;
 - qualification certificates that compare residuals with already-derived uncertainty bounds without changing either quantity.
 
-No WSS-pair search, parametric closure result, CFD solver, vascular geometry engine, or experimental-data adapter is claimed yet. Those belong to later phases.
+Phase-3 state generation, WSS-pair freezing, and closure outcomes are not implemented yet. Curved endovascular geometry, CFD solving, and experimental-data adapters remain later phases.
 
 Run the locked analytical benchmark with:
 
@@ -130,9 +132,10 @@ src/shift/                  installable Python package
   cli.py                    public command-line entry point
 tests/                      contracts, mechanics, numerics, uncertainty, regressions
 docs/SCIENTIFIC_CONTRACT.md theory-to-code invariants
-docs/EXPERIMENT_PROTOCOL.md predeclared experiment ordering
+docs/EXPERIMENT_PROTOCOL.md global predeclared experiment ordering
 docs/EXACT_POISEUILLE_BENCHMARK.md exact Phase-1 benchmark derivation
 docs/NUMERICAL_VERIFICATION.md Phase-2 operator and uncertainty contract
+docs/PHASE3_PROTOCOL.md      locked Phase-3 parametric closure experiment
 docs/ARCHITECTURE.md        bounded module architecture
 docs/ROADMAP.md             staged implementation plan
 examples/                   publication-oriented examples as they are added
