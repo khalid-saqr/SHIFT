@@ -10,28 +10,28 @@ The project implements the mechanical-closure theory developed for arterial mech
 
 SHIFT tests the operational closure hypothesis
 
-\[
+$$
 d_\tau(A,B) \le \varepsilon_\tau
 \;\Longrightarrow\;
 d_{\mathcal M}(A,B) \le \varepsilon_{\mathcal M}.
-\]
+$$
 
 A reproducible pair satisfying
 
-\[
+$$
 d_\tau(A,B) \le \varepsilon_\tau,
 \qquad
 d_{\mathcal M}(A,B) > \varepsilon_{\mathcal M}
-\]
+$$
 
 is a **WSS-equivalent but diagnostically distinct near-wall state** for the declared state representation.
 
 The primary dimensionless state is
 
-\[
+$$
 \mathbf m^*=
 [Q^*,q_H^*,\mathbf C_U^*,\mathbf C_H^*,\mathbf C_D^*].
-\]
+$$
 
 SHIFT treats the diagnostic hierarchy as a closure-testing sequence, not as a biological causal hierarchy.
 
@@ -62,7 +62,7 @@ The codebase will grow only where required by the experiment. Planned capabiliti
 2. vascular wall geometry, wall correspondence, and near-wall control-volume construction;
 3. WSS evaluation from the full Cauchy traction;
 4. three-dimensional differential operators with convergence auditing;
-5. computation of \(Q\), \(q_H\), Lamb-vector fields, generalized Crocco terms, nonlinear–unsteady diagnostics, and finite-volume Lamb descriptors;
+5. computation of $Q$, $q_H$, Lamb-vector fields, generalized Crocco terms, nonlinear–unsteady diagnostics, and finite-volume Lamb descriptors;
 6. independent numerical certification of incompressibility, hydrodynamic-charge identity, and Crocco closure;
 7. uncertainty-derived tolerances and reproducible WSS-equivalence search;
 8. the complete source04 distance hierarchy;

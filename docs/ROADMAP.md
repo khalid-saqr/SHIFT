@@ -17,7 +17,7 @@ The roadmap is intentionally staged. A later phase starts only after the earlier
 - [ ] dimensional field containers
 - [ ] analytical differential operators for exact benchmark fields
 - [ ] WSS from full traction
-- [ ] \(Q\), vorticity, Lamb vector, \(q_H\)
+- [ ] $Q$, vorticity, Lamb vector, $q_H$
 - [ ] generalized Crocco terms
 - [ ] finite-volume Lamb descriptor
 - [ ] primary and nested distances
