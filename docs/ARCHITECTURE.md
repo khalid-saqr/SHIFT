@@ -12,22 +12,29 @@ SHIFT should remain a small scientific core with clearly bounded extensions. Arc
 6. **Qualification is separate from outcome evaluation.** Numerical certificates cannot depend on whether closure succeeds.
 7. **Small public API.** Internal implementation can evolve; scientific result objects and CLI behavior remain deliberate.
 
-## Planned modules
+## Module boundaries
 
 Modules are added only when implementation starts; empty placeholder packages are avoided.
 
+Current exact-kernel modules:
+
 - `shift.contracts` — immutable scales, weights, thresholds, and validation.
-- `shift.fields` — typed dimensional velocity/pressure/wall field containers.
+- `shift.state` — dimensional and dimensionless source04 primary-state containers.
+- `shift.mechanics` — traction/WSS, $Q$, vorticity, Lamb vector, $q_H$ identities, Crocco diagnostics, and finite-volume descriptors.
+- `shift.certify` — continuity, hydrodynamic-charge, and Crocco residuals without embedded application thresholds.
+- `shift.metrics` — $d_\tau$, $d_{\mathcal M}$, and the nested source04 distances.
+- `shift.models` — exact and later parametric flow families used by the experiment.
+- `shift.benchmarks` — locked analytical regression entry points.
+- `shift.cli` — stable user-facing commands.
+
+Modules introduced only when later phases require them:
+
+- `shift.fields` — general velocity/pressure/wall field containers for external numerical and experimental sources.
 - `shift.geometry` — wall meshes, normals, correspondence, and $V_\delta$.
 - `shift.operators` — spatial/temporal differential operators and convergence metadata.
-- `shift.mechanics` — traction/WSS, $Q$, vorticity, Lamb vector, $q_H$, Crocco terms, finite-volume descriptors.
-- `shift.certify` — continuity and identity residuals plus uncertainty/convergence qualification.
-- `shift.metrics` — $d_\tau,d_{\mathcal M}$ and nested source04 distances.
-- `shift.models` — parametric exact and numerical flow families used by the experiment.
 - `shift.search` — WSS-only candidate matching and frozen-pair manifests.
 - `shift.io` — explicit adapters for HDF5/VTK/NPZ and later experimental/CFD sources.
 - `shift.report` — machine-readable manifests, source tables, and publication graphics.
-- `shift.cli` — stable user-facing commands.
 
 ## Data-source adapters
 
