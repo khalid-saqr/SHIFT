@@ -18,11 +18,11 @@ Modules are added only when implementation starts; empty placeholder packages ar
 
 - `shift.contracts` — immutable scales, weights, thresholds, and validation.
 - `shift.fields` — typed dimensional velocity/pressure/wall field containers.
-- `shift.geometry` — wall meshes, normals, correspondence, and \(V_\delta\).
+- `shift.geometry` — wall meshes, normals, correspondence, and $V_\delta$.
 - `shift.operators` — spatial/temporal differential operators and convergence metadata.
-- `shift.mechanics` — traction/WSS, \(Q\), vorticity, Lamb vector, \(q_H\), Crocco terms, finite-volume descriptors.
+- `shift.mechanics` — traction/WSS, $Q$, vorticity, Lamb vector, $q_H$, Crocco terms, finite-volume descriptors.
 - `shift.certify` — continuity and identity residuals plus uncertainty/convergence qualification.
-- `shift.metrics` — \(d_\tau,d_{\mathcal M}\) and nested source04 distances.
+- `shift.metrics` — $d_\tau,d_{\mathcal M}$ and nested source04 distances.
 - `shift.models` — parametric exact and numerical flow families used by the experiment.
 - `shift.search` — WSS-only candidate matching and frozen-pair manifests.
 - `shift.io` — explicit adapters for HDF5/VTK/NPZ and later experimental/CFD sources.
