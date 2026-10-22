@@ -22,12 +22,20 @@ def build_parser() -> argparse.ArgumentParser:
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("info", help="show project identity and scientific contract summary")
     sub.add_parser("doctor", help="show the local runtime needed for bug reports")
+
     benchmark = sub.add_parser(
         "benchmark", help="run a locked analytical regression benchmark"
     )
     benchmark_sub = benchmark.add_subparsers(dest="benchmark", required=True)
     benchmark_sub.add_parser(
         "poiseuille", help="run the source04 exact parallel-plate benchmark"
+    )
+
+    phase3 = sub.add_parser("phase3", help="run locked Phase-3 pre-pair operations")
+    phase3_sub = phase3.add_subparsers(dest="phase3_operation", required=True)
+    phase3_sub.add_parser(
+        "audit",
+        help="run the complete 504-state numerical uncertainty audit",
     )
     return parser
 
@@ -54,6 +62,13 @@ def main(argv: list[str] | None = None) -> int:
         result = representative_poiseuille_pair()
         print(json.dumps(result.as_dict(), indent=2, sort_keys=True))
         return 0
+
+    if args.command == "phase3" and args.phase3_operation == "audit":
+        from .phase3_audit import run_phase3_uncertainty_audit
+
+        result = run_phase3_uncertainty_audit()
+        print(json.dumps(result.as_dict(), indent=2, sort_keys=True))
+        return 0 if result.gate_passed else 2
 
     raise AssertionError("unreachable")
 

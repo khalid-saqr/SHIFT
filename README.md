@@ -52,9 +52,27 @@ The locked scientific contract is documented in [`docs/SCIENTIFIC_CONTRACT.md`](
 
 ## Current status
 
-**Phase 1 — exact theory kernel** and **Phase 2 — numerical operators and uncertainty** are implemented. The **Phase-3 parametric closure experiment is scientifically locked** in [`docs/PHASE3_PROTOCOL.md`](docs/PHASE3_PROTOCOL.md), and its exact state generator is now implemented.
+**Phase 1 — exact theory kernel** and **Phase 2 — numerical operators and uncertainty** are implemented. The **Phase-3 parametric closure experiment is scientifically locked** in [`docs/PHASE3_PROTOCOL.md`](docs/PHASE3_PROTOCOL.md), its exact 504-state generator is implemented, and the complete pre-pair numerical uncertainty audit has now been executed.
 
-The locked Phase-3 family is an exact multiharmonic biaxial pulsatile parallel-plate Navier–Stokes family with 504 predeclared states and 1512 predeclared same-WSS candidate pairs. Its parameter grid, refinement levels, uncertainty derivation, WSS-only pair-freezing rule, primary closure decision, nested outcomes, and stopping rule remain fixed.
+The locked Phase-3 convergence requirement was
+
+$$
+p\ge1.9.
+$$
+
+The defining hydrodynamic-charge reconstruction produced
+
+$$
+\boxed{p_{q_H}=1.53396<1.9},
+$$
+
+so the protocol's hard-stop rule was triggered **before any Phase-3 tolerance was frozen and before any WSS candidate pair was inspected**. The audit result is documented in [`docs/PHASE3_UNCERTAINTY_AUDIT.md`](docs/PHASE3_UNCERTAINTY_AUDIT.md).
+
+Accordingly, the current Phase-3 execution state is
+
+$$
+\boxed{\text{STOPPED AT THE PRE-PAIR NUMERICAL CONVERGENCE GATE}}.
+$$
 
 The package currently provides:
 
@@ -68,9 +86,10 @@ The package currently provides:
 - convergence-series, Richardson uncertainty, conservative uncertainty budgets, and provenance-bearing qualification thresholds;
 - qualification certificates that compare residuals with already-derived uncertainty bounds without changing either quantity;
 - exact multiharmonic biaxial pulsatile channel fields with analytical velocity, pressure-gradient, WSS, source04 state, Crocco, and finite-volume Lamb references;
-- deterministic enumeration of the locked 504-state Phase-3 family and refusal of off-protocol parameter/refinement values.
+- deterministic enumeration of the locked 504-state Phase-3 family and refusal of off-protocol parameter/refinement values;
+- the complete Phase-3 numerical uncertainty-audit engine, including enforcement that failed convergence cannot produce pair-equivalence tolerances.
 
-The Phase-3 uncertainty audit, tolerance freeze, WSS-pair manifest, and closure outcomes are not implemented yet. Curved endovascular geometry, CFD solving, and experimental-data adapters remain later phases.
+No Phase-3 WSS-pair manifest or closure outcome exists. Curved endovascular geometry, CFD solving, and experimental-data adapters remain later phases.
 
 Run the locked analytical benchmark with:
 
@@ -78,7 +97,15 @@ Run the locked analytical benchmark with:
 shift benchmark poiseuille
 ```
 
-For the representative pair $H_B=2H_A$, the regression target includes $d_\tau=0$, $d_Q=0$, $d_q=0.1538018223$, and $d_{\mathcal M}=0.0742470472$, with $d_{LU}$ remaining undefined for the steady solution. The complete derivation and reference values are documented in [`docs/EXACT_POISEUILLE_BENCHMARK.md`](docs/EXACT_POISEUILLE_BENCHMARK.md).
+Run the complete locked Phase-3 pre-pair uncertainty audit with:
+
+```bash
+shift phase3 audit
+```
+
+The audit command emits machine-readable JSON. Under the current locked Phase-3 protocol it exits nonzero because the convergence gate fails, with `gate_passed: false` and `pair_tolerances: null`.
+
+For the representative Phase-1 pair $H_B=2H_A$, the regression target includes $d_\tau=0$, $d_Q=0$, $d_q=0.1538018223$, and $d_{\mathcal M}=0.0742470472$, with $d_{LU}$ remaining undefined for the steady solution. The complete derivation and reference values are documented in [`docs/EXACT_POISEUILLE_BENCHMARK.md`](docs/EXACT_POISEUILLE_BENCHMARK.md).
 
 The numerical verification and uncertainty contract is documented in [`docs/NUMERICAL_VERIFICATION.md`](docs/NUMERICAL_VERIFICATION.md).
 
@@ -107,7 +134,7 @@ The codebase grows only where required by the experiment. The staged target incl
 4. verified three-dimensional differential operators with convergence auditing;
 5. computation of $Q$, $q_H$, Lamb-vector fields, generalized Crocco terms, nonlinear–unsteady diagnostics, and finite-volume Lamb descriptors;
 6. independent numerical certification of incompressibility, hydrodynamic-charge identity, and Crocco closure;
-7. uncertainty-derived tolerances and reproducible WSS-equivalence search;
+7. uncertainty-derived tolerances and reproducible WSS-equivalence search when the corresponding predeclared numerical gate passes;
 8. the complete source04 distance hierarchy;
 9. machine-readable experiment manifests and publication figures/tables;
 10. later adapters for experimentally measured or externally simulated vascular fields when their observability supports the requested quantity.
@@ -119,6 +146,7 @@ python -m pip install -e .
 shift info
 shift doctor
 shift benchmark poiseuille
+shift phase3 audit
 ```
 
 For development:
@@ -145,6 +173,7 @@ src/shift/                  installable Python package
   metrics.py                d_tau, d_M, and nested source04 distances
   benchmarks.py             locked analytical regression entry points
   phase3.py                 locked Phase-3 constants, 504 cases, exact wrapper
+  phase3_audit.py           complete pre-pair Phase-3 uncertainty audit
   models/poiseuille.py      exact parallel-plate Poiseuille family
   models/taylor_green.py    exact Navier-Stokes numerical-verification family
   models/biaxial_channel.py exact multiharmonic biaxial pulsatile channel
@@ -155,6 +184,7 @@ docs/EXPERIMENT_PROTOCOL.md global predeclared experiment ordering
 docs/EXACT_POISEUILLE_BENCHMARK.md exact Phase-1 benchmark derivation
 docs/NUMERICAL_VERIFICATION.md Phase-2 operator and uncertainty contract
 docs/PHASE3_PROTOCOL.md      locked Phase-3 parametric closure experiment
+docs/PHASE3_UNCERTAINTY_AUDIT.md executed Phase-3 pre-pair audit
 docs/ARCHITECTURE.md        bounded module architecture
 docs/ROADMAP.md             staged implementation plan
 examples/                   publication-oriented examples as they are added
