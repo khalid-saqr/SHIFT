@@ -14,16 +14,16 @@ The roadmap is intentionally staged. A later phase starts only after the earlier
 
 ## Phase 1 — exact theory kernel
 
-- [ ] dimensional field containers
-- [ ] analytical differential operators for exact benchmark fields
-- [ ] WSS from full traction
-- [ ] $Q$, vorticity, Lamb vector, $q_H$
-- [ ] generalized Crocco terms
-- [ ] finite-volume Lamb descriptor
-- [ ] primary and nested distances
-- [ ] reproduce the source04 parallel-plate counterexample exactly
+- [x] dimensional exact-benchmark field and primary-state containers
+- [x] analytical derivatives for the exact benchmark family
+- [x] WSS from full traction
+- [x] $Q$, vorticity, Lamb vector, $q_H$
+- [x] generalized Crocco terms
+- [x] finite-volume Lamb descriptor
+- [x] primary and nested distances
+- [x] reproduce the source04 parallel-plate counterexample exactly
 
-Exit criterion: all closed-form benchmark values reproduce independently derived reference values and identity residuals are at floating-point level where analytically expected.
+Exit criterion: all closed-form benchmark values reproduce independently derived reference values and identity residuals are at floating-point level where analytically expected. **Satisfied by the locked Poiseuille regression suite.**
 
 ## Phase 2 — numerical operator and uncertainty kernel
 
