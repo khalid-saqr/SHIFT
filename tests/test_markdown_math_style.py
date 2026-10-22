@@ -2,7 +2,6 @@
 
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN_MARKDOWN_MATH_DELIMITERS = (r"\(", r"\)", r"\[", r"\]")
 
