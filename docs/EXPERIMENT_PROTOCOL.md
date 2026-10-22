@@ -12,7 +12,7 @@ Write and hash a machine-readable configuration containing:
 - temporal forcing;
 - spatial and temporal discretization plan;
 - derivative and interpolation operators;
-- wall mapping and near-wall thickness \(\delta\);
+- wall mapping and near-wall thickness $\delta$;
 - characteristic scales;
 - strictly positive state weights;
 - uncertainty/convergence procedure;
@@ -38,7 +38,7 @@ Before pair matching, quantify:
 - pressure-gradient sensitivity where applicable;
 - control-volume sensitivity.
 
-This stage may reject a state as numerically inadmissible. It must not use \(d_{\mathcal M}\) to choose thresholds.
+This stage may reject a state as numerically inadmissible. It must not use $d_{\mathcal M}$ to choose thresholds.
 
 ## Stage 3 — derive and freeze uncertainty thresholds
 
@@ -46,19 +46,19 @@ Derive tolerances from the predeclared convergence, uncertainty, or repeatabilit
 
 ## Stage 4 — WSS-only equivalence search
 
-Compute the complete space-time vector WSS representation and \(d_\tau\). Select candidate pairs using only WSS information and the frozen \(\varepsilon_\tau\). Freeze the candidate-pair list and its hash before state-distance outcomes are inspected.
+Compute the complete space-time vector WSS representation and $d_\tau$. Select candidate pairs using only WSS information and the frozen $\varepsilon_\tau$. Freeze the candidate-pair list and its hash before state-distance outcomes are inspected.
 
 ## Stage 5 — state-space evaluation
 
 For the frozen WSS-equivalent pairs, compute:
 
-- \(d_Q\);
-- \(d_q\);
-- \(d_\ell\);
-- \(d_{\rm comp}\);
-- \(d_\Lambda\);
-- \(d_{LU}\);
-- primary \(d_{\mathcal M}\).
+- $d_Q$;
+- $d_q$;
+- $d_\ell$;
+- $d_{\rm comp}$;
+- $d_\Lambda$;
+- $d_{LU}$;
+- primary $d_{\mathcal M}$.
 
 Undefined activity-set metrics remain undefined.
 
@@ -66,11 +66,11 @@ Undefined activity-set metrics remain undefined.
 
 Apply the already frozen thresholds. A pair with
 
-\[
+$$
 d_\tau\le\varepsilon_\tau,
 \qquad
 d_{\mathcal M}>\varepsilon_{\mathcal M}
-\]
+$$
 
 is a source04 counterexample for the tested flow class and declared state representation.
 
