@@ -59,7 +59,9 @@ class SampledFlow:
                 raise ValueError("unsteady flow requires explicit time_s")
             time = np.asarray(self.time_s, dtype=float)
             if time.ndim != 1 or time.size < 3:
-                raise ValueError("time_s must be a 1-D coordinate with at least 3 points")
+                raise ValueError(
+                    "time_s must be a 1-D coordinate with at least 3 points"
+                )
             if not np.all(np.isfinite(time)) or not np.all(np.diff(time) > 0.0):
                 raise ValueError("time_s must be finite and strictly increasing")
             expected_velocity = (time.size,) + self.grid.shape + (3,)
@@ -73,8 +75,12 @@ class SampledFlow:
         object.__setattr__(self, "pressure_pa", pressure)
         if self.potential_m2_s2 is not None:
             potential = np.asarray(self.potential_m2_s2, dtype=float)
-            if potential.shape != expected_pressure or not np.all(np.isfinite(potential)):
-                raise ValueError("potential must match scalar flow support and be finite")
+            invalid_shape = potential.shape != expected_pressure
+            has_nonfinite = not np.all(np.isfinite(potential))
+            if invalid_shape or has_nonfinite:
+                raise ValueError(
+                    "potential must match scalar flow support and be finite"
+                )
             object.__setattr__(self, "potential_m2_s2", potential)
 
 
