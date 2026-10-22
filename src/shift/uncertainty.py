@@ -93,7 +93,11 @@ class UncertaintyComponent:
     provenance: str
 
     def __post_init__(self) -> None:
-        if not self.name.strip() or not self.units.strip() or not self.provenance.strip():
+        if (
+            not self.name.strip()
+            or not self.units.strip()
+            or not self.provenance.strip()
+        ):
             raise ValueError("name, units, and provenance must be non-empty")
         if not np.isfinite(self.bound) or self.bound < 0.0:
             raise ValueError("uncertainty bound must be finite and non-negative")
