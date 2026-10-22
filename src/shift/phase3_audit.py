@@ -7,7 +7,7 @@ It does not enumerate WSS pairs or evaluate closure outcomes.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from functools import lru_cache
+from functools import cache
 
 import numpy as np
 from numpy.typing import NDArray
@@ -30,13 +30,11 @@ from .metrics import (
 )
 from .operators import differentiate
 from .phase3 import (
-    PHASE3_MU_PA_S,
     PHASE3_NT_LEVELS,
     PHASE3_NY_LEVELS,
     PHASE3_PERIODS_S,
     PHASE3_PRODUCTION_NT,
     PHASE3_PRODUCTION_NY,
-    PHASE3_RHO_KG_M3,
     PHASE3_SCALES,
     PHASE3_STATE_WEIGHTS,
     Phase3Case,
@@ -49,8 +47,10 @@ FloatArray = NDArray[np.float64]
 
 PHASE3_CONVERGENCE_GATE = 1.9
 
-# Axis-specific interpretation of the already-locked refinement audit.
-# A quantity is fitted only against the resolution of an operator that can change it.
+# A convergence order is fitted only against a numerical axis that changes the
+# corresponding reconstructed quantity. This separates spatial and temporal
+# operator convergence without treating the fixed orthogonal-axis error floor as
+# an order-zero failure.
 SPATIAL_GATE_QUANTITIES = ("wss", "qH", "CH", "CD", "ell", "Lambda")
 TEMPORAL_GATE_QUANTITIES = ("CU",)
 STRUCTURAL_ZERO_QUANTITIES = ("Q",)
@@ -134,23 +134,16 @@ class Phase3AuditResult:
         data = asdict(self)
         data["gate_passed"] = self.gate_passed
         data["pair_tolerances_frozen"] = self.gate_passed
-        if self.gate_passed:
-            data["pair_tolerances"] = self.pair_tolerances()
-        else:
-            data["pair_tolerances"] = None
+        data["pair_tolerances"] = (
+            self.pair_tolerances() if self.gate_passed else None
+        )
         return data
 
 
 @dataclass(frozen=True, slots=True)
 class _NumericalChannelFields:
     primary_state: PrimaryMechanicalState
-    q_invariant_s_2: FloatArray
-    hydrodynamic_charge_s_2: FloatArray
-    c_unsteady_m_s2: FloatArray
-    c_head_m_s2: FloatArray
-    c_dissipative_m_s2: FloatArray
     lamb_m_s2: FloatArray
-    laplacian_kinetic_energy_s_2: FloatArray
     wall_shear_pa: FloatArray
     lambda_l_pa: FloatArray
     residuals: IdentityResiduals
@@ -162,7 +155,7 @@ def _apply_matrix(values: FloatArray, matrix: FloatArray, *, axis: int) -> Float
     return np.moveaxis(differentiated, 0, axis)
 
 
-@lru_cache(maxsize=None)
+@cache
 def _operator_matrix(samples: int, extent: float, derivative_order: int) -> FloatArray:
     coordinate = np.linspace(0.0, extent, samples)
     identity = np.eye(samples, dtype=float)
@@ -203,9 +196,10 @@ def _reconstruct_numerically(state) -> _NumericalChannelFields:
 
     c_unsteady = du_dt
     c_head = np.zeros_like(velocity)
-    c_head[..., 0] = state.pressure_gradient_pa_m[:, None, 0] / state.density_kg_m3
+    pressure_gradient = state.pressure_gradient_pa_m / state.density_kg_m3
+    c_head[..., 0] = pressure_gradient[:, None, 0]
     c_head[..., 1] = grad_k_y
-    c_head[..., 2] = state.pressure_gradient_pa_m[:, None, 2] / state.density_kg_m3
+    c_head[..., 2] = pressure_gradient[:, None, 2]
     nu = state.dynamic_viscosity_pa_s / state.density_kg_m3
     c_dissipative = -nu * d2u_dy2
 
@@ -236,13 +230,7 @@ def _reconstruct_numerically(state) -> _NumericalChannelFields:
     )
     return _NumericalChannelFields(
         primary_state=primary,
-        q_invariant_s_2=q_invariant,
-        hydrodynamic_charge_s_2=q_h,
-        c_unsteady_m_s2=c_unsteady,
-        c_head_m_s2=c_head,
-        c_dissipative_m_s2=c_dissipative,
         lamb_m_s2=ell,
-        laplacian_kinetic_energy_s_2=laplacian_k,
         wall_shear_pa=wall_shear,
         lambda_l_pa=lambda_l,
         residuals=residuals,
@@ -328,7 +316,10 @@ def _update_global(
             worst[name] = case.case_id
 
 
-def _observed_order(levels: tuple[Phase3AuditLevel, ...], quantity: str) -> float | None:
+def _observed_order(
+    levels: tuple[Phase3AuditLevel, ...],
+    quantity: str,
+) -> float | None:
     finest = levels[-3:]
     errors = np.array([level.maxima[quantity] for level in finest], dtype=float)
     if np.any(errors <= 0.0):
@@ -338,7 +329,9 @@ def _observed_order(levels: tuple[Phase3AuditLevel, ...], quantity: str) -> floa
     return float(slope)
 
 
-def _spatial_levels(cases: tuple[Phase3Case, ...]) -> tuple[Phase3AuditLevel, ...]:
+def _spatial_levels(
+    cases: tuple[Phase3Case, ...],
+) -> tuple[Phase3AuditLevel, ...]:
     levels = []
     for samples in PHASE3_NY_LEVELS:
         maxima = _empty_maxima()
@@ -361,10 +354,24 @@ def _spatial_levels(cases: tuple[Phase3Case, ...]) -> tuple[Phase3AuditLevel, ..
     return tuple(levels)
 
 
-def _temporal_levels(cases: tuple[Phase3Case, ...]) -> tuple[Phase3AuditLevel, ...]:
+def _temporal_levels(
+    cases: tuple[Phase3Case, ...],
+    production_level: Phase3AuditLevel,
+) -> tuple[Phase3AuditLevel, ...]:
     levels = []
     max_period = max(PHASE3_PERIODS_S)
     for samples in PHASE3_NT_LEVELS:
+        if samples == PHASE3_PRODUCTION_NT:
+            levels.append(
+                Phase3AuditLevel(
+                    samples=samples,
+                    spacing=max_period / (samples - 1),
+                    maxima=dict(production_level.maxima),
+                    worst_case_ids=dict(production_level.worst_case_ids),
+                )
+            )
+            continue
+
         maxima = _empty_maxima()
         worst = _empty_worst()
         for case in cases:
@@ -389,7 +396,8 @@ def run_phase3_uncertainty_audit() -> Phase3AuditResult:
     """Run the complete locked 504-state Phase-3 pre-pair uncertainty audit."""
     cases = locked_phase3_cases()
     spatial = _spatial_levels(cases)
-    temporal = _temporal_levels(cases)
+    production = spatial[-1]
+    temporal = _temporal_levels(cases, production)
 
     spatial_orders = {
         name: _observed_order(spatial, name) for name in SPATIAL_GATE_QUANTITIES
@@ -405,7 +413,6 @@ def run_phase3_uncertainty_audit() -> Phase3AuditResult:
         name: order is not None and order >= PHASE3_CONVERGENCE_GATE
         for name, order in temporal_orders.items()
     }
-    production = spatial[-1]
     structural_zero_passed = {
         name: production.maxima[name] == 0.0 for name in STRUCTURAL_ZERO_QUANTITIES
     }
